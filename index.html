@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Игра Угадай число</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 400px; margin: 50px auto; }
+    input, button { padding: 8px; font-size: 16px; }
+    #message { margin-top: 20px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h2>Угадай число от 1 до 100</h2>
+  
+  <input type="number" id="guess" min="1" max="100" placeholder="Введите число" />
+  <button id="checkBtn">Проверить</button>
+  <button id="resetBtn">Начать заново</button>
+  
+  <div id="message"></div>
+  
+  <script>
+    let secretNumber = Math.floor(Math.random() * 100) + 1; // загадать число от 1 до 100
+    let attempts = 0;
+    
+    const guessInput = document.getElementById('guess');
+    const checkBtn = document.getElementById('checkBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const messageDiv = document.getElementById('message');
+
+    checkBtn.addEventListener('click', () => {
+      let guess = Number(guessInput.value);
+      attempts++;
+
+      if (!guess || guess < 1 || guess > 100) {
+        messageDiv.textContent = 'Введите число от 1 до 100!';
+        return;
+      }
+      
+      if (guess === secretNumber) {
+        messageDiv.textContent = `🎉 Поздравляем! Вы угадали число ${secretNumber} за ${attempts} попыток.`;
+        checkBtn.disabled = true;
+        guessInput.disabled = true;
+      } else if (guess < secretNumber) {
+        messageDiv.textContent = 'Загаданное число больше.';
+      } else {
+        messageDiv.textContent = 'Загаданное число меньше.';
+      }
+
+      guessInput.value = '';
+      guessInput.focus();
+    });
+
+    resetBtn.addEventListener('click', () => {
+      secretNumber = Math.floor(Math.random() * 100) + 1;
+      attempts = 0;
+      messageDiv.textContent = '';
+      checkBtn.disabled = false;
+      guessInput.disabled = false;
+      guessInput.value = '';
+      guessInput.focus();
+    });
+  </script>
+</body>
+</html>
